@@ -1,3 +1,4 @@
+require("../utils/checkServer");
 const Server = require("../models/Server");
 
 class MonitorService {
@@ -6,8 +7,8 @@ class MonitorService {
         this.nextId = 1;
     }
 
-    addServidor(nomeSite, host) {
-        const link = new Server(this.nextId++, nomeSite, host);
+    addServidor(nomeSite, ip, url) {
+        const link = new Server(this.nextId++, nomeSite, ip, url);
         link.status = "unreachable";
 
         this.servidores.push(link);
@@ -15,19 +16,25 @@ class MonitorService {
     }
 
     getServidores() {
+        console.log(this.servidores);
         return this.servidores;
     }
 
     async verificarTodos(verificarServer) {
         await Promise.all(
             this.servidores.map(async (servidor) => {
-                const result = await verificarServer(servidor.host);
-
-                servidor.status = result.status;
-                servidor.latencia = result.latencia;
-                console.log(servidor);
+                console.log(`objeto servidor: ${servidor.nome} (${servidor.ip}) e ${servidor.pingLatencia}ms objeto todo ${JSON.stringify(servidor)}`);
+                const result = await verificarServer(servidor);
                 
                 servidor.update(result);
+                console.log({
+                    nome: servidor.nome,
+                    status: servidor.status,
+                    ip: servidor.ip,
+                    url: servidor.url,
+                    ping: servidor.pingLatencia,
+                    http: servidor.httpLatencia
+                });
             })
         );
     }

@@ -3,9 +3,9 @@ const MonitorService = require("../services/MonitorService");
 const monitor = new MonitorService();
 
 exports.addServidor = (req, res) => {
-    const { nome, host } = req.body;
+    const { nome, ip, url } = req.body;
 
-    const servidor = monitor.addServidor(nome, host);
+    const servidor = monitor.addServidor(nome, ip, url);
     res.json(servidor);
 };
 

@@ -1,23 +1,35 @@
 class Server {
-    constructor(id, nome, host) {
+    constructor(id, nome, ip, url) {
+        console.log("CONSTRUTOR CHAMADO COM:", { id, nome, ip, url });
         this.id = id;
         this.nome = nome;
-        this.host = host;
+        
+        this.ip = ip;
+        this.url = url;
+
+        //this.tipo = "ping";
         this.status = "unknown";
         this.falhas = 0;
-        this.ultLatencia = null;
+        this.pingLatencia = null;
+        this.httpLatencia = null;
     }
 
-    update(result) {
-        this.ultLatencia = result.latencia;
-
-        if (result.status === "offline") {
+    update(serverStatus) {
+        this.pingLatencia = serverStatus.ping?.latencia ?? null;
+        this.httpLatencia = serverStatus.http?.latencia ?? null;
+        if (!serverStatus.ping.status && !serverStatus.http.status) {
+            this.status = "offline";
             this.falhas++;
-        } else {
-            this.falhas = 0;
+            return;
+        }
+        if (serverStatus.http && !serverStatus.http.status) {
+            this.falhas++;
+            this.status = "site caiu";
+            return;
         }
 
-        this.status = this.falhas >= 3 ? "offline" : "online";
+        this.falhas = 0;
+        this.status = "online";
     }
 }
 
