@@ -7,7 +7,7 @@ async function httpCheck(url) {
         await axios.get(url, { timeout: 3000 });
 
         return {
-            status: "online",
+            status: true,
             latencia: Date.now() - agora
         };
     }

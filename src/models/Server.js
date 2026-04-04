@@ -3,7 +3,7 @@ class Server {
         console.log("CONSTRUTOR CHAMADO COM:", { id, nome, ip, url });
         this.id = id;
         this.nome = nome;
-        
+
         this.ip = ip;
         this.url = url;
 
@@ -17,12 +17,17 @@ class Server {
     update(serverStatus) {
         this.pingLatencia = serverStatus.ping?.latencia ?? null;
         this.httpLatencia = serverStatus.http?.latencia ?? null;
-        if (!serverStatus.ping.status && !serverStatus.http.status) {
+
+        const pingOk = serverStatus.ping?.status ?? false;
+        const httpOk = serverStatus.http?.status ?? false;
+
+        if (!pingOk && !httpOk) {
             this.status = "offline";
             this.falhas++;
             return;
         }
-        if (serverStatus.http && !serverStatus.http.status) {
+
+        if (serverStatus.http && !httpOk) {
             this.falhas++;
             this.status = "site caiu";
             return;
