@@ -8,6 +8,6 @@ export async function buscarServidores() :Promise<Server[]> {
     }
     catch (erro) {
         console.error('Erro ao buscar servidores:', erro);
-        return [];
+        throw erro;
     }
 }

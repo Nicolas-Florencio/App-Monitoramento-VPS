@@ -33,11 +33,11 @@ export default function ServerCard({ servidor }: { servidor: Server }) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#1e1e1e",
-    padding: 16,
+    padding: 20,
     marginVertical: 8,
     marginHorizontal: 12,
     borderRadius: 10,
-    borderWidth: 1,
+    borderWidth: 8,
     borderColor: "#333",
   },
 
@@ -49,13 +49,14 @@ const styles = StyleSheet.create({
   },
 
   status: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "bold",
-    marginBottom: 6,
+    marginBottom: 8,
   },
 
   texto: {
     fontSize: 14,
     color: "#ccc",
+    marginBottom: 4,
   },
 });
